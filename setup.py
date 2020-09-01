@@ -15,7 +15,7 @@ setuptools.setup(
             'test/*.py',
             'test/testfiles/*.openair',
         ]},
-    description="A Python package to convert go data to OpenAir format",
+    description="A simple python package to convert geo data to OpenAir format",
     long_description="""\
 =========
 pyKML
