@@ -1,0 +1,7 @@
+AC $airspace_class
+AN $airspace_name
+AH $airspace_ceiling
+AL $airspace_floor
+
+$coordinates
+
