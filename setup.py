@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyopenair",
-    version="0.0.1",
+    version="0.0.1-dev",
     author="lpofredc",
     author_email="frederic.cloitre@lpo.fr",
     packages=['pyopenair'],
