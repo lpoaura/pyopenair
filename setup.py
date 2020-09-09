@@ -16,19 +16,13 @@ setuptools.setup(
             'test/testfiles/*.openair',
         ]},
     description="A simple python package to convert geo data to OpenAir format",
-    long_description="""\
+    long_description="""
+pyOpenair
 =========
-pyKML
-=========
-pyKML is a Python package for parsing and authoring KML documents. It is based
-on the lxml.objectify API (http://codespeak.net/lxml/objectify.html) which
-provides Pythonic access to XML documents.
-.. figure:: http://pykml.googlecode.com/hg/docs/source/logo/pyKML_logo_200x200.png
-   :scale: 100 %
-   :alt: pyKML logo
-See the Package Documentation for information on installation and usage.
+
+pyOpenair is a simple package to convert geo data from wkt to openair
 """,
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/lpoaura/pyopenair",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
