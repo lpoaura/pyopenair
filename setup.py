@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyopenair",
-    version="0.0.1-dev",
+    version="0.0.1",
     author="lpofredc",
     author_email="frederic.cloitre@lpo.fr",
     packages=['pyopenair'],
@@ -37,5 +37,6 @@ See the Package Documentation for information on installation and usage.
     python_requires='>=3.6',
     install_requires=[
         'shapely>=1.7.1',
+        'numpy>=1.19.1'
     ],
 )
