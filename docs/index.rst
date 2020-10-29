@@ -6,7 +6,7 @@
 Welcome to pyOpenair's documentation!
 =====================================
 
-pyOpenair is a simple package to convert geo data from wkt to
+pyOpenair is a very simple package to convert geo data from wkt to
 `OpenAir format
 <http://www.winpilot.com/usersguide/userairspace.asp>`_.
 

@@ -1,6 +1,7 @@
 from .factory import wkt2openair
 
 if __name__ == '__main__':
+    # execute only if run as a script
     import argparse
 
     parser = argparse.ArgumentParser(description='convert wkt to openair')

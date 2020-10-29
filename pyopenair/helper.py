@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from collections import OrderedDict
-
-from shapely.wkt import loads
 
 logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(format="%(process)d-%(levelname)s-%(message)s")
@@ -23,7 +20,7 @@ AXIS_DIR_DICT = {"y": ["N", "S"], "x": ["E", "W"]}
 COORDS_ORDER = ["x", "y"]
 
 
-def stringify_coords(value, strlength=2) -> str:
+def stringify_coords(value: any, strlength: int = 2) -> str:
     """Stringify  each DMS integer values to formatted strings. eg: 6 seconds will return 006
 
     :param value: Input value, can be string, float or integer
@@ -48,7 +45,7 @@ def stringify_coords(value, strlength=2) -> str:
         raise RuntimeError("<stringify_coords> failed for reason: {}".format(e))
 
 
-def decdeg2dms(dd) -> tuple:
+def decdeg2dms(dd: any) -> tuple:
     """Convert decimal degree coordinate to a tuple containing each DMS values
 
     :param dd: Input value, can be string, float or integer
@@ -56,7 +53,7 @@ def decdeg2dms(dd) -> tuple:
     :return: A tuple containing respectively degree, minutes and seconds
     :rtype: tuple
     """
-    dd=float(dd)
+    dd = float(dd)
     negative = dd < 0
     dd = abs(dd)
     minutes, seconds = divmod(dd * 3600, 60)
@@ -71,7 +68,7 @@ def decdeg2dms(dd) -> tuple:
     return (degrees, minutes, seconds)
 
 
-def generate_openair_coord(coord, axis_type) -> str:
+def generate_openair_coord(coord: float, axis_type: str) -> str:
     """Generate coordinate in openair format "DD:MM:SS DIRECTION"
 
     :param coord: Coordinate value (latitude or longitude)
@@ -100,7 +97,7 @@ def generate_openair_coord(coord, axis_type) -> str:
     return coord
 
 
-def generate_coords(coords) -> str:
+def generate_coords(coords: tuple) -> str:
     """Generate X/Y coordinates in OpenAir format "DP DD:MM:SS N DD:MM:SS E"
 
     :param coords: Axis definition, must be one of these values : x, lon, longitude, y, latitude, lat
@@ -127,3 +124,76 @@ def generate_coords(coords) -> str:
     openair_coords = "DP {} {}".format(openair_coord[1], openair_coord[0])
     return openair_coords
 
+
+def altitude_formatter(cat: str, alti: int, unit: str = 'm', mode: str = None) -> any:
+    """Airspace upper or lower bounds formatter
+
+    :param kind: Is upper (h) or lower (l) bound
+    :type kind: str
+    :param alti: [description]
+    :type alti: int
+    :param unit: [description], defaults to 'm'
+    :type unit: str, optional
+    :param mode: [description], defaults to None
+    :type mode: str, optional
+    :return: [description]
+    :rtype: any
+    """
+    if alti is None and mode is None:
+        return None
+    else:
+        cat = cat.upper()
+        strlist=[]
+        if cat not in ('H','L'):
+            raise ValueError('altitude type must be "H" or "L"') 
+        strlist.append("A{}".format(cat))
+        if alti is not None:
+            unit = unit.upper()
+            if unit not in ('FT','M','FL'):
+                raise ValueError('Altitude unit type must be "FT", "M" or "FL"') 
+            if unit == 'FL':
+                stralti="{unit}{alti}"
+            else:
+                stralti="{alti}FT"
+                if unit == 'M':
+                    alti = int(alti*3.28084)
+                
+            strlist.append(stralti.format(unit=unit, alti=alti))
+        if mode is not None:
+            strlist.append("{mode}".format(mode=mode))    
+        return ' '.join(strlist)
+
+
+def fields_formatter(cat: str, *args:str) -> str:
+    """AirSpace description formatter, use to generate description lines begenning with "A"
+
+    :param cat: Category suffix like, e.g. AC, AN, *Atimes
+    :type cat: str
+    :return: Formatter string, e.g. AC ZMC
+    :rtype: str
+    """
+    if cat.replace('*','')[0].upper() != 'A':
+        raise ValueError('field category must start with A or *A')
+    if len([*args])==0 :
+        raise ValueError('field category must containt at least on argument')
+    strlist=[cat.upper()]
+    strlist.extend([*args])
+    
+    return ' '.join(strlist)
+
+
+def coalesce(var: any, default: any = "default") -> any:
+    """Return a default value if main value is None
+
+    :param var: entry variable
+    :type var: any
+
+    :param default: default value
+    :type default: any
+
+    :return:  return default if var is null
+    :rtype: any
+    """
+    if var is None
+
+    return default if var is None else var
