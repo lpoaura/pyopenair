@@ -125,7 +125,7 @@ def generate_coords(coords: tuple) -> str:
     return openair_coords
 
 
-def altitude_formatter(cat: str, alti: int, unit: str = 'm', mode: str = None) -> any:
+def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -> any:
     """Airspace upper or lower bounds formatter
 
     :param kind: Is upper (h) or lower (l) bound
@@ -143,28 +143,28 @@ def altitude_formatter(cat: str, alti: int, unit: str = 'm', mode: str = None) -
         return None
     else:
         cat = cat.upper()
-        strlist=[]
-        if cat not in ('H','L'):
-            raise ValueError('altitude type must be "H" or "L"') 
+        strlist = []
+        if cat not in ("H", "L"):
+            raise ValueError('altitude type must be "H" or "L"')
         strlist.append("A{}".format(cat))
         if alti is not None:
             unit = unit.upper()
-            if unit not in ('FT','M','FL'):
-                raise ValueError('Altitude unit type must be "FT", "M" or "FL"') 
-            if unit == 'FL':
-                stralti="{unit}{alti}"
+            if unit not in ("FT", "M", "FL"):
+                raise ValueError('Altitude unit type must be "FT", "M" or "FL"')
+            if unit == "FL":
+                stralti = "{unit}{alti}"
             else:
-                stralti="{alti}FT"
-                if unit == 'M':
-                    alti = int(alti*3.28084)
-                
+                stralti = "{alti}FT"
+                if unit == "M":
+                    alti = int(alti * 3.28084)
+
             strlist.append(stralti.format(unit=unit, alti=alti))
         if mode is not None:
-            strlist.append("{mode}".format(mode=mode))    
-        return ' '.join(strlist)
+            strlist.append("{mode}".format(mode=mode))
+        return " ".join(strlist)
 
 
-def fields_formatter(cat: str, *args:str) -> str:
+def fields_formatter(cat: str, *args: str) -> str:
     """AirSpace description formatter, use to generate description lines begenning with "A"
 
     :param cat: Category suffix like, e.g. AC, AN, *Atimes
@@ -172,14 +172,36 @@ def fields_formatter(cat: str, *args:str) -> str:
     :return: Formatter string, e.g. AC ZMC
     :rtype: str
     """
-    if cat.replace('*','')[0].upper() != 'A':
-        raise ValueError('field category must start with A or *A')
-    if len([*args])==0 :
-        raise ValueError('field category must containt at least on argument')
-    strlist=[cat.upper()]
+    if cat.replace("*", "")[0].upper() != "A":
+        raise ValueError("field category must start with A or *A")
+    if len([*args]) == 0:
+        raise ValueError("field category must containt at least one argument")
+    strlist = [cat.upper()]
     strlist.extend([*args])
-    
-    return ' '.join(strlist)
+
+    return " ".join(strlist)
+
+
+def comment_formatter(comment: str) -> str:
+    """[summary]
+
+    :param comment: [description]
+    :type comment: str
+    :return: [description]
+    :rtype: str
+    """
+    lines = comment.split("\n")
+    max_len = -1
+    for l in lines:
+        if len(l) > max_len:
+            max_len = len(l)
+    new_lines = []
+    new_lines.append("*" * (max_len + 4))
+    for line in lines:
+        new_lines.append("* " + line.ljust(max_len) + " *")
+    new_lines.append("*" * (max_len + 4))
+    new_comment = "\n".join(new_lines)
+    return new_comment
 
 
 def coalesce(var: any, default: any = "default") -> any:
@@ -194,6 +216,4 @@ def coalesce(var: any, default: any = "default") -> any:
     :return:  return default if var is null
     :rtype: any
     """
-    if var is None
-
     return default if var is None else var

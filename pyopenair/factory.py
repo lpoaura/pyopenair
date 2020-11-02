@@ -7,6 +7,7 @@ from pyopenair.helper import (
     generate_coords,
     altitude_formatter,
     fields_formatter,
+    comment_formatter,
 )
 
 
@@ -20,6 +21,7 @@ def wkt2openair(
     al_alti: int = None,
     al_unit: str = "FT",
     al_mode: str = "SFC",
+    comment: str = None,
     other: dict = {},
 ) -> str:
     """Return an AirSpace in OpenAir format all main informations (name, class, upper and lower bounds, etc.)
@@ -49,8 +51,11 @@ def wkt2openair(
     """
 
     header = []
+    label = fields_formatter("AN", an)
+    if comment:
+        header.append(comment_formatter(comment))
     header.append(fields_formatter("AC", ac))
-    header.append(fields_formatter("AN", ac))
+    header.append("{label}")
     header.append(altitude_formatter("H", ah_alti, ah_unit, ah_mode))
     header.append(altitude_formatter("L", al_alti, al_unit, al_mode))
     for k, v in other.items():
@@ -65,7 +70,7 @@ def wkt2openair(
         for node in list(geom.exterior.coords):
             node_coords.append(generate_coords(node))
             node_coords = list(OrderedDict.fromkeys(node_coords))
-        desc = "\n".join(header)
+        desc = "\n".join(header).format(label=label)
         for coord in node_coords:
             desc += "{}\n".format(coord)
         return desc
@@ -75,14 +80,14 @@ def wkt2openair(
         for g in geom:
             node_coords = []
             for node in list(g.exterior.coords):
-                #                 print(node)
                 node_coords.append(generate_coords(node))
                 node_coords = list(OrderedDict.fromkeys(node_coords))
-            label_unit = "{}#{}".format(label, i)
+            label_elem = "{} ({}/{})".format(label, i, len(geom))
             i = i + 1
-            desc = header_template.format(label_unit)
+            desc = "\n".join(header).format(label=label_elem)
             for coord in node_coords:
                 desc += "{}\n".format(coord)
+            desc += "\n"
             result += desc
 
     return result
