@@ -1,14 +1,14 @@
 Functions
 =========
 
-main module
------------
-.. automodule:: pyopenair.main
-    :members:
-
 helper module
 -------------
 .. automodule:: pyopenair.helper
+    :members:
+
+factory module
+--------------
+.. automodule:: pyopenair.factory
     :members:
 
 .. toctree::

@@ -16,25 +16,30 @@ AIRSPACE related record types
 AC class:
     class = Airspace Class, see below:
 
-    - R restricted
-    - Q danger
-    - P prohibited
-    - A Class A
-    - B Class B
-    - C Class C
-    - D Class D
-    - GP glider prohibited
-    - CTR CTR
-    - W Wave Window
+    - **R** restricted
+    - **Q** danger
+    - **P** prohibited
+    - **A** Class A
+    - **B** Class B
+    - **C** Class C
+    - **D** Class D
+    - **GP**    glider prohibited
+    - **CTR**   CTR
+    - **W** Wave Window
 
 AN string:
     Airspace Name
 
 AH string:
-    Airspace Ceiling
+    Upper bound, composed by the altitude (meters or feet) followed by the relative area:
+
+    - **AMSL** Above mean sea level
+    - **AGL** Above ground level
 
 AL string:
-    Airspace Floor
+    Lower bound, ?
+
+    - **SFC** ?
 
 AT coordinate:
     Coordinate of where to place a name label on the map (optional)
