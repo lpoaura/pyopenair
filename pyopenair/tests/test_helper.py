@@ -1,4 +1,4 @@
-from pyopenair.helper import (
+from ..helper import (
     stringify_coords,
     altitude_formatter,
     comment_formatter,

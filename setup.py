@@ -5,16 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyopenair",
-    version="0.1.0",
+    version="0.1.1",
     author="lpofredc",
     author_email="frederic.cloitre@lpo.fr",
-    packages=["pyopenair"],
-    package_data={
-        "pyopenair": [
-            "test/*.py",
-            "test/testfiles/*.openair",
-        ]
-    },
+    packages=["pyopenair", "pyopenair.tests"],
     description="A simple python package to convert geo data to OpenAir format",
     long_description="""
 pyOpenair
