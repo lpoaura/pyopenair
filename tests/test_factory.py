@@ -6,7 +6,7 @@ an = "label"
 ac = "class"
 
 
-def test_wkt2openair_poly_answer():
+def test_wkt2openair_poly():
     """
     Test wkt2openair with polygon
     """
@@ -23,7 +23,7 @@ DP 44:40:42 N 03:57:59 E"""
     assert wkt2openair(wkt=wktpoly, an=an, ac=ac) == openair
 
 
-def test_wkt2openair_multipoly_answer():
+def test_wkt2openair_multipoly():
     """
     Test wkt2openair with polygon
     """

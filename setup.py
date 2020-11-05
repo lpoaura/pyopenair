@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.1.1",
     author="lpofredc",
     author_email="frederic.cloitre@lpo.fr",
-    packages=["pyopenair", "pyopenair.tests"],
+    packages=["pyopenair"],
     description="A simple python package to convert geo data to OpenAir format",
     long_description="""
 pyOpenair
