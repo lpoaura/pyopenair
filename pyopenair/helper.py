@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from math import ceil
 
 logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(format="%(process)d-%(levelname)s-%(message)s")
@@ -156,7 +157,7 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
             else:
                 stralti = "{alti}FT"
                 if unit == "M":
-                    alti = int(alti * 3.28084)
+                    alti = ceil(alti * 3.28084)
 
             strlist.append(stralti.format(unit=unit, alti=alti))
         if mode is not None:
