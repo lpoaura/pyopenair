@@ -1,4 +1,4 @@
-from ..helper import (
+from pyopenair.helper import (
     stringify_coords,
     altitude_formatter,
     comment_formatter,
@@ -10,3 +10,4 @@ from ..helper import (
 
 def test_stringify_coords():
     pass
+
