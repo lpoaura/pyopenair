@@ -1,33 +1,25 @@
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="pyopenair",
-    version="0.1.0",
-    author="lpofredc",
+    version="1.0.0",
+    author="@lpofredc",
     author_email="frederic.cloitre@lpo.fr",
+    maintainer="@lpofredc",
+    maintainer_email="frederic.cloitre@lpo.fr",
     packages=["pyopenair"],
-    package_data={
-        "pyopenair": [
-            "test/*.py",
-            "test/testfiles/*.openair",
-        ]
-    },
     description="A simple python package to convert geo data to OpenAir format",
-    long_description="""
-pyOpenair
-=========
-
-pyOpenair is a simple package to convert geo data from wkt to openair
-""",
+    long_description=long_description,
     url="https://github.com/lpoaura/pyopenair",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU GENERAL PUBLIC LICENSE Version 3",
         "Operating System :: OS Independent",
     ],
+    keywords=["openair", "paragliding", "wkt2openair", "geo2openair", "airspace"],
     python_requires=">=3.6",
     install_requires=["shapely>=1.7.1"],
 )

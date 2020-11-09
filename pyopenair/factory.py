@@ -60,7 +60,7 @@ def wkt2openair(
     header.append(altitude_formatter("L", al_alti, al_unit, al_mode))
     for k, v in other.items():
         header.append(fields_formatter(k, v))
-    header.append("\n")
+    # header.append("\n")
     #     logging.debug('prepare to transform object named {}'.format(label))
     geom = loads(wkt)
     #     logging.debug('geom type is {}'.format(geom.geom_type))
@@ -72,22 +72,25 @@ def wkt2openair(
             node_coords = list(OrderedDict.fromkeys(node_coords))
         desc = "\n".join(header).format(label=label)
         for coord in node_coords:
-            desc += "{}\n".format(coord)
-        return desc
+            desc += "\n{}".format(coord)
+        result = desc
     if geom.geom_type == "MultiPolygon":
-        result = ""
+        areas = []
+        lengeom = len(geom)
         i = 1
         for g in geom:
             node_coords = []
             for node in list(g.exterior.coords):
                 node_coords.append(generate_coords(node))
                 node_coords = list(OrderedDict.fromkeys(node_coords))
-            label_elem = "{} ({}/{})".format(label, i, len(geom))
+            label_elem = "{} ({}/{})".format(label, i, lengeom)
             i = i + 1
-            desc = "\n".join(header).format(label=label_elem)
+            desc_tpl = "\n".join(header)
+            desc = desc_tpl.format(label=label_elem)
             for coord in node_coords:
-                desc += "{}\n".format(coord)
-            desc += "\n"
-            result += desc
+                desc += "\n{}".format(coord)
+            desc += "\n\n"
+            areas.append(desc)
+        result = "\n".join(areas)
 
     return result

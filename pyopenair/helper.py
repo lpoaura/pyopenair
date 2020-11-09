@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from math import ceil
 
 logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(format="%(process)d-%(levelname)s-%(message)s")
@@ -139,6 +140,7 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
     :return: [description]
     :rtype: any
     """
+    cat = cat.upper()
     if alti is None and mode is None:
         return None
     else:
@@ -148,6 +150,7 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
             raise ValueError('altitude type must be "H" or "L"')
         strlist.append("A{}".format(cat))
         if alti is not None:
+            alti = int(alti)
             unit = unit.upper()
             if unit not in ("FT", "M", "FL"):
                 raise ValueError('Altitude unit type must be "FT", "M" or "FL"')
@@ -156,7 +159,7 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
             else:
                 stralti = "{alti}FT"
                 if unit == "M":
-                    alti = int(alti * 3.28084)
+                    alti = ceil(alti * 3.28084)
 
             strlist.append(stralti.format(unit=unit, alti=alti))
         if mode is not None:
@@ -176,7 +179,7 @@ def fields_formatter(cat: str, *args: str) -> str:
         raise ValueError("field category must start with A or *A")
     if len([*args]) == 0:
         raise ValueError("field category must containt at least one argument")
-    strlist = [cat.upper()]
+    strlist = [cat]
     strlist.extend([*args])
 
     return " ".join(strlist)
