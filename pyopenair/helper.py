@@ -140,7 +140,6 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
     :return: [description]
     :rtype: any
     """
-    unit = unit.upper()
     cat = cat.upper()
     if alti is None and mode is None:
         return None
@@ -151,6 +150,7 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
             raise ValueError('altitude type must be "H" or "L"')
         strlist.append("A{}".format(cat))
         if alti is not None:
+            alti = int(alti)
             unit = unit.upper()
             if unit not in ("FT", "M", "FL"):
                 raise ValueError('Altitude unit type must be "FT", "M" or "FL"')
