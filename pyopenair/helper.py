@@ -179,7 +179,7 @@ def fields_formatter(cat: str, *args: str) -> str:
         raise ValueError("field category must start with A or *A")
     if len([*args]) == 0:
         raise ValueError("field category must containt at least one argument")
-    strlist = [cat.upper()]
+    strlist = [cat]
     strlist.extend([*args])
 
     return " ".join(strlist)
