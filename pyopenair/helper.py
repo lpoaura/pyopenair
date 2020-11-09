@@ -140,6 +140,8 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
     :return: [description]
     :rtype: any
     """
+    unit = unit.upper()
+    cat = cat.upper()
     if alti is None and mode is None:
         return None
     else:
