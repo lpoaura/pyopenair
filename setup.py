@@ -16,7 +16,7 @@ setuptools.setup(
     url="https://github.com/lpoaura/pyopenair",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GNU GENERAL PUBLIC LICENSE Version 3",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
     keywords=["openair", "paragliding", "wkt2openair", "geo2openair", "airspace"],
