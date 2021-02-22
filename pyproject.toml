@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "pyopenair"
+version = "1.0.0"
+authors = ["lpofredc <frederic.cloitre@lpo.fr>"]
+description = "A simple python package to convert geo data to OpenAir format"
+license = "GNU General Public License v3 (GPLv3)"
+
+readme = "README.rst"
+
+homepage = "https://github.com/lpoaura/pyopenair"
+repository = "https://github.com/lpoaura/pyopenair"
+documentation = "https://pyopenair.readthedocs.io"
+
+keywords = ["openair", "paragliding", "wkt2openair", "geo2openair", "airspace"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Operating System :: OS Independent",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/lpoaura/pyopenair/issues"
+
+[tool.poetry.scripts]
+pyopenair = "pyopenair.main:cli"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+Shapely = "^1.7.1"
+
+
+[tool.poetry.dev-dependencies]
+Sphinx = "^3.5.1"
+flake8 = "^3.8.4"
+mypy = "^0.812"
+black = "^20.8b1"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
