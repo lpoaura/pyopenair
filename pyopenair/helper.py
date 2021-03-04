@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from math import ceil
+from math import ceil, floor
 
 logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(format="%(process)d-%(levelname)s-%(message)s")
@@ -19,6 +19,25 @@ AXIS_DICT = {
 AXIS_DIR_DICT = {"y": ["N", "S"], "x": ["E", "W"]}
 
 COORDS_ORDER = ["x", "y"]
+
+ft_factor = 3.28084
+
+
+def m2ft(cat: str, m: int) -> int:
+    """Transform Altitude from meters to rounded feets (floor for lower bounds, ceil for upper bounds)
+
+    :param cat: Kind of altitude, "H" for upper bounds, "L" for lower bounds
+    :type cat: str
+    :param m: Altitude in meters
+    :type m: int
+    :return: Altitude un feets
+    :rtype: int
+    """
+    if cat not in ("H", "L"):
+        raise ValueError(
+            'Category must be "H" (for upper bounds) or "L" (for lower bounds)'
+        )
+    return ceil(m * ft_factor) if cat == "H" else floor(m * ft_factor)
 
 
 def stringify_coords(value: any, strlength: int = 2) -> str:
@@ -129,8 +148,8 @@ def generate_coords(coords: tuple) -> str:
 def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -> any:
     """Airspace upper or lower bounds formatter
 
-    :param kind: Is upper (h) or lower (l) bound
-    :type kind: str
+    :param cat: Is upper (h) or lower (l) bound
+    :type cat: str
     :param alti: [description]
     :type alti: int
     :param unit: [description], defaults to 'm'
@@ -159,7 +178,7 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
             else:
                 stralti = "{alti}FT"
                 if unit == "M":
-                    alti = ceil(alti * 3.28084)
+                    alti = m2ft(cat, alti)
 
             strlist.append(stralti.format(unit=unit, alti=alti))
         if mode is not None:
