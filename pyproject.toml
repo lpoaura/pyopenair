@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "pyopenair"
-version = "1.0.0"
+version = "1.1.0"
 authors = ["lpofredc <frederic.cloitre@lpo.fr>"]
 description = "A simple python package to convert geo data to OpenAir format"
-license = "GNU General Public License v3 (GPLv3)"
+license = "AGPL-3.0-or-later"
 
 readme = "README.rst"
 
@@ -26,7 +26,6 @@ pyopenair = "pyopenair.main:cli"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-
 Shapely = "^1.7.1"
 
 
@@ -35,6 +34,10 @@ Sphinx = "^3.5.1"
 flake8 = "^3.8.4"
 mypy = "^0.812"
 black = "^20.8b1"
+sphinx-rtd-theme = "^0.5.1"
+Pygments = "^2.8.0"
+pylint = "^2.7.0"
+pytest = "^6.2.2"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
