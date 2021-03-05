@@ -22,19 +22,44 @@ def test_decdeg2dms():
     assert decdeg2dms(5.555) == result
 
 
-def test_altitude_formatter_m():
-    result = "AH 493FT AGL"
-    assert altitude_formatter(cat="H", alti=150, unit="m", mode="AGL") == result
+def test_upper_bounds_altitude_formatter_m():
+    result = "AH 329FT AGL"
+    assert (
+        altitude_formatter(cat="H", alti=100, unit="m", mode="AGL") == result
+    )
+
+
+def test_upper_bounds_altitude_formatter_empty():
+    result = None
+    assert (
+        altitude_formatter(cat="H", alti=None, unit=None, mode=None) == result
+    )
+
+
+def test_lower_bounds_altitude_formatter_empty():
+    result = None
+    assert (
+        altitude_formatter(cat="L", alti=None, unit=None, mode=None) == result
+    )
+
+
+def test_lower_bounds_altitude_formatter_m():
+    result = "AL 328FT AGL"
+    assert (
+        altitude_formatter(cat="L", alti=100, unit="m", mode="AGL") == result
+    )
 
 
 def test_altitude_formatter_ft():
-    result = "AL 150FT AGL"
-    assert altitude_formatter(cat="l", alti=150, unit="ft", mode="AGL") == result
+    result = "AL 100FT AGL"
+    assert (
+        altitude_formatter(cat="l", alti=100, unit="ft", mode="AGL") == result
+    )
 
 
 def test_fields_formatter():
     result = "*ATYPE arg1 arg2"
-    assert fields_formatter("*ATYPE", "arg1", "arg2")
+    assert fields_formatter("*ATYPE", "arg1", "arg2") == result
 
 
 def test_generate_openair_coord_x():
@@ -63,8 +88,8 @@ def test_generate_coords():
 
 
 def test_comment_formatter():
-    comment = """A pariatur dignissimos vel ipsum pariatur. 
-Veritatis eum aut aut dolorem doloremque reprehenderit. 
+    comment = """A pariatur dignissimos vel ipsum pariatur
+Veritatis eum aut aut dolorem doloremque reprehenderit
 Dolor et dicta ducimus in provident quod.
 """
     result = "************************************************************\n* A pariatur dignissimos vel ipsum pariatur.               *\n* Veritatis eum aut aut dolorem doloremque reprehenderit.  *\n* Dolor et dicta ducimus in provident quod.                *\n*                                                          *\n************************************************************"

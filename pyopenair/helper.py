@@ -4,8 +4,8 @@
 import logging
 from math import ceil, floor
 
-logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(format="%(process)d-%(levelname)s-%(message)s")
+
+logger = logging.getLogger(__name__)
 
 AXIS_DICT = {
     "longitude": "x",
@@ -20,11 +20,12 @@ AXIS_DIR_DICT = {"y": ["N", "S"], "x": ["E", "W"]}
 
 COORDS_ORDER = ["x", "y"]
 
-ft_factor = 3.28084
+ft_factor = 0.3048
 
 
 def m2ft(cat: str, m: int) -> int:
-    """Transform Altitude from meters to rounded feets (floor for lower bounds, ceil for upper bounds)
+    """Transform Altitude from meters to rounded feets
+    (floor for lower bounds, ceil for upper bounds)
 
     :param cat: Kind of altitude, "H" for upper bounds, "L" for lower bounds
     :type cat: str
@@ -37,11 +38,13 @@ def m2ft(cat: str, m: int) -> int:
         raise ValueError(
             'Category must be "H" (for upper bounds) or "L" (for lower bounds)'
         )
-    return ceil(m * ft_factor) if cat == "H" else floor(m * ft_factor)
+    return ceil(m / ft_factor) if cat == "H" else floor(m / ft_factor)
 
 
 def stringify_coords(value: any, strlength: int = 2) -> str:
-    """Stringify  each DMS integer values to formatted strings. eg: 6 seconds will return 006
+    """Stringify each DMS integer values to formatted strings.
+
+    eg: 6 seconds will return 006
 
     :param value: Input value, can be string, float or integer
     :type value: any
@@ -56,13 +59,17 @@ def stringify_coords(value: any, strlength: int = 2) -> str:
     strlength_valid = [2, 3]
     if strlength not in strlength_valid:
         raise ValueError(
-            "<stringify_coords> strlength value must be one of {}".format(charnum_valid)
+            "<stringify_coords> strlength value must be one of {}".format(
+                strlength_valid
+            )
         )
     try:
         result = str(int(float(value))).rjust(strlength, "0")
         return result
     except Exception as e:
-        raise RuntimeError("<stringify_coords> failed for reason: {}".format(e))
+        raise RuntimeError(
+            "<stringify_coords> failed for reason: {}".format(e)
+        )
 
 
 def decdeg2dms(dd: any) -> tuple:
@@ -101,7 +108,9 @@ def generate_openair_coord(coord: float, axis_type: str) -> str:
 
     if axis_type not in AXIS_DICT.keys():
         raise ValueError(
-            "<get_cardinal> strlength value must be one of {}".format(AXIS_DICT.keys())
+            "<get_cardinal> strlength value must be one of {}".format(
+                AXIS_DICT.keys()
+            )
         )
 
     axis = AXIS_DICT[axis_type]
@@ -128,7 +137,9 @@ def generate_coords(coords: tuple) -> str:
     if type(coords) is not tuple:
         raise TypeError("<generate_coords> coords must be a tuple")
     if len(coords) != 2:
-        raise ValueError("<generate_coords> coords must be a tuple of 2 values")
+        raise ValueError(
+            "<generate_coords> coords must be a tuple of 2 values"
+        )
     openair_coord = ()
     for i in range(len(COORDS_ORDER)):
         if abs(coords[i]) > 180:
@@ -145,7 +156,9 @@ def generate_coords(coords: tuple) -> str:
     return openair_coords
 
 
-def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -> any:
+def altitude_formatter(
+    cat: str, alti: int, unit: str = "m", mode: str = None
+) -> any:
     """Airspace upper or lower bounds formatter
 
     :param cat: Is upper (h) or lower (l) bound
@@ -172,17 +185,20 @@ def altitude_formatter(cat: str, alti: int, unit: str = "m", mode: str = None) -
             alti = int(alti)
             unit = unit.upper()
             if unit not in ("FT", "M", "FL"):
-                raise ValueError('Altitude unit type must be "FT", "M" or "FL"')
+                raise ValueError(
+                    'Altitude unit type must be "FT", "M" or "FL"'
+                )
             if unit == "FL":
                 stralti = "{unit}{alti}"
             else:
                 stralti = "{alti}FT"
                 if unit == "M":
                     alti = m2ft(cat, alti)
-
             strlist.append(stralti.format(unit=unit, alti=alti))
         if mode is not None:
             strlist.append("{mode}".format(mode=mode))
+        else:
+            strlist.append("SFC")
         return " ".join(strlist)
 
 
@@ -214,9 +230,9 @@ def comment_formatter(comment: str) -> str:
     """
     lines = comment.split("\n")
     max_len = -1
-    for l in lines:
-        if len(l) > max_len:
-            max_len = len(l)
+    for line in lines:
+        if len(line) > max_len:
+            max_len = len(line)
     new_lines = []
     new_lines.append("*" * (max_len + 4))
     for line in lines:

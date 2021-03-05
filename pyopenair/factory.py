@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import logging
 from collections import OrderedDict
 from shapely.wkt import loads
 from pyopenair.helper import (
@@ -9,6 +9,9 @@ from pyopenair.helper import (
     fields_formatter,
     comment_formatter,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 def wkt2openair(
@@ -49,15 +52,25 @@ def wkt2openair(
     :return: Airspace in OpenAir format
     :rtype: str
     """
-
+    logger.debug(
+        "Locals: \n{locals}".format(
+            locals="\n".join(
+                ["\t{}: {}".format(k, v) for k, v in locals().items()]
+            )
+        )
+    )
     header = []
     label = fields_formatter("AN", an)
+    logger.debug("label: {label}".format(label=label))
+
     if comment:
         header.append(comment_formatter(comment))
     header.append(fields_formatter("AC", ac))
     header.append("{label}")
-    header.append(altitude_formatter("H", ah_alti, ah_unit, ah_mode))
-    header.append(altitude_formatter("L", al_alti, al_unit, al_mode))
+    if ah_alti and ah_mode:
+        header.append(altitude_formatter("H", ah_alti, ah_unit, ah_mode))
+    if al_alti and al_mode:
+        header.append(altitude_formatter("L", al_alti, al_unit, al_mode))
     for k, v in other.items():
         header.append(fields_formatter(k, v))
     # header.append("\n")

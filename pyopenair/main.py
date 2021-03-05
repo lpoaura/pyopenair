@@ -1,6 +1,8 @@
-from .factory import wkt2openair
 import argparse
+import logging
+
 from . import __version__
+from .factory import wkt2openair
 
 
 def cli():
@@ -14,6 +16,17 @@ Convert wkt to openair
     documentation: https://pyopenair.readthedocs.io
 """,
         formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument(
+        "--version", "-V", action="version", version="%(prog)s " + __version__
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        help="Debug mode",
+        action="store_const",
+        dest="loglevel",
+        const=logging.DEBUG,
     )
     optionalParser = parser._action_groups.pop()  # Edited this line
     # optionalParser = parser.add_argument_group("optional named arguments")
@@ -66,6 +79,26 @@ Convert wkt to openair
     )
     parser._action_groups.append(optionalParser)  # added this line
     args = parser.parse_args()
+
+    # logging.basicConfig(level=args.logLevel)
+
+    logging.basicConfig(
+        format="%(asctime)s - %(module)s - %(funcName)s - %(levelname)s - %(message)s",
+        level=args.loglevel,
+    )
+    logger = logging.getLogger(__name__)
+    # logger.debug(f"logLevel {args.logLevel} d{logging.DEBUG} i{logging.INFO}")
+    logger.debug(
+        "Args \n{args}".format(
+            args="\n".join(
+                [
+                    "\t{}: {}".format(k, v)
+                    for k, v in sorted(vars(args).items())
+                ]
+            )
+        )
+    )
+
     print(
         wkt2openair(
             wkt=args.wkt,
