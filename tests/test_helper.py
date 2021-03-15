@@ -92,5 +92,5 @@ def test_comment_formatter():
 Veritatis eum aut aut dolorem doloremque reprehenderit
 Dolor et dicta ducimus in provident quod.
 """
-    result = "************************************************************\n* A pariatur dignissimos vel ipsum pariatur.               *\n* Veritatis eum aut aut dolorem doloremque reprehenderit.  *\n* Dolor et dicta ducimus in provident quod.                *\n*                                                          *\n************************************************************"
+    result = "**********************************************************\n* A pariatur dignissimos vel ipsum pariatur              *\n* Veritatis eum aut aut dolorem doloremque reprehenderit *\n* Dolor et dicta ducimus in provident quod.              *\n*                                                        *\n**********************************************************"
     assert comment_formatter(comment) == result
