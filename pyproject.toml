@@ -25,7 +25,7 @@ classifiers = [
 pyopenair = "pyopenair.main:cli"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6.1"
 Shapely = "^1.7.1"
 
 
