@@ -1,15 +1,16 @@
+from data import headers, wktpoly
+from shapely.wkt import loads
+
 from pyopenair.helper import (
-    stringify_coords,
     altitude_formatter,
     comment_formatter,
+    decdeg2dms,
     fields_formatter,
     generate_coords,
     generate_openair_coord,
-    decdeg2dms,
     object_formatter,
+    stringify_coords,
 )
-from shapely.wkt import loads
-from data import wktpoly, headers
 
 
 def test_stringify_coords_l2():
