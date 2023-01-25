@@ -59,87 +59,32 @@ jobs:
     - name: Run mypy
       run: poetry run mypy ./pyopenair
 
-# jobs:
-#   check-syntax-lints-type:
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         python-version: [3.9]
-#     runs-on: "ubuntu-latest"
-#     steps:
-#       #------------------------------------------------
-#       #  -----  checkout repo and set-up python  -----
-#       #------------------------------------------------
-#       - name: Check out repository
-#         uses: actions/checkout@v2
-#       - name: Set up Python ${{ matrix.python-version }}
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: ${{ matrix.python-version }}
-#       #--------------------------------------------------------------
-#       #   -----  install dependencies -----
-#       #--------------------------------------------------------------]
-#       - uses: actions/checkout@v3
-#       - name: Install poetry
-#         run: pip install poetry
-#       - name: Install dependencies
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: ${{ matrix.python-version }}
-#           cache: "poetry"
-#       - run: poetry config virtualenvs.in-project false && poetry install
-#       #----------------------------------------------
-#       #   --------  run code format checks  ---------
-#       #----------------------------------------------
-#       - name: Format check with isort
-#         run: poetry run isort --check {pyopenair,tests,docs} --profile black
+  run-unit-test:
+    needs: [check-syntax-lints-type]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.10"]
 
-#       - name: Format check with black
-#         run: poetry run black --check {pyopenair,tests,docs}
-#       #-----------------------------------
-#       #   --------  run linters  ---------
-#       #-----------------------------------
-#       - name: Run linters
-#         run: poetry run pylint
-#       #--------------------------------
-#       #   --------  run mypy  ---------
-#       #--------------------------------
-#       - name: Run mypy
-#         run: poetry run mypy ./
-
-#   run-unittests:
-#     needs: [check-syntax-lints-type]
-#     strategy:
-#       fail-fast: true
-#       matrix:
-#         os: ["ubuntu-latest"]
-#         python-version: [3.9]
-#     runs-on: ${{ matrix.os }}
-#     steps:
-#       #------------------------------------------------
-#       #  -----  checkout repo and set-up python  -----
-#       #------------------------------------------------
-#       - name: Check out repository
-#         uses: actions/checkout@v2
-#       - name: Set up Python ${{ matrix.python-version }}
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: ${{ matrix.python-version }}
-#       #--------------------------------------------------------------
-#       #   -----  install dependencies -----
-#       #--------------------------------------------------------------]
-#       - uses: actions/checkout@v3
-#       - name: Install poetry
-#         run: pip install poetry
-#       - name: Install dependencies
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: ${{ matrix.python-version }}
-#           cache: "poetry"
-#       - run: poetry config virtualenvs.in-project false && poetry install
-#       #--------------------------------------
-#       #   --------  run test suite  ---------
-#       #--------------------------------------
-#       - name: Run tests
-#         run: |
-#           poetry run pytest
+    steps:
+    #-----------------------------------------------
+    #  -----  checkout repo and set-up python  -----
+    #-----------------------------------------------    
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Run image
+      uses: abatilo/actions-poetry@v2
+    #------------------------------------
+    #  -----  Install dependencies  -----
+    #------------------------------------
+    - name: Install dependencies
+      run: |
+        poetry install
+    - name: Run tests
+      run: |
+        poetry run pytest
