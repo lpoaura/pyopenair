@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
+
 from shapely.wkt import loads
+
 from pyopenair.helper import (
     altitude_formatter,
-    fields_formatter,
     comment_formatter,
+    fields_formatter,
     object_formatter,
 )
-
 
 logger = logging.getLogger(__name__)
 

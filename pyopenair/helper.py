@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from math import ceil, floor
 from collections import OrderedDict
-from shapely.geometry.polygon import Polygon
+from math import ceil, floor
 
+from shapely.geometry.polygon import Polygon
 
 logger = logging.getLogger(__name__)
 
