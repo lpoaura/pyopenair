@@ -9,7 +9,7 @@ from pyopenair.helper import (
     object_formatter,
 )
 from shapely.wkt import loads
-from data import BasicDataToTest, DataToTest, wktpoly, wktmultipoly, headers
+from data import wktpoly, headers
 
 
 def test_stringify_coords_l2():

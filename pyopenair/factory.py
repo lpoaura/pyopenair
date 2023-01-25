@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
-from collections import OrderedDict
 from shapely.wkt import loads
 from pyopenair.helper import (
-    generate_coords,
     altitude_formatter,
     fields_formatter,
     comment_formatter,
