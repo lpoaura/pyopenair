@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Some helpers"""
 
 import logging
 from collections import OrderedDict
@@ -22,17 +23,17 @@ AXIS_DIR_DICT = {"y": ["N", "S"], "x": ["E", "W"]}
 
 COORDS_ORDER = ["x", "y"]
 
-ft_factor = 0.3048
+FT_FACTOR = 0.3048
 
 
-def m2ft(cat: str, m: int) -> int:
+def m2ft(cat: str, alti: int) -> int:
     """Transform Altitude from meters to rounded feets
     (floor for lower bounds, ceil for upper bounds)
 
     :param cat: Kind of altitude, "H" for upper bounds, "L" for lower bounds
     :type cat: str
-    :param m: Altitude in meters
-    :type m: int
+    :param alti: Altitude in meters
+    :type alti: int
     :return: Altitude un feets
     :rtype: int
     """
@@ -40,7 +41,7 @@ def m2ft(cat: str, m: int) -> int:
         raise ValueError(
             'Category must be "H" (for upper bounds) or "L" (for lower bounds)'
         )
-    return ceil(m / ft_factor) if cat == "H" else floor(m / ft_factor)
+    return ceil(alti / FT_FACTOR) if cat == "H" else floor(alti / FT_FACTOR)
 
 
 def stringify_coords(value: any, strlength: int = 2) -> str:
@@ -61,20 +62,19 @@ def stringify_coords(value: any, strlength: int = 2) -> str:
     strlength_valid = [2, 3]
     if strlength not in strlength_valid:
         raise ValueError(
-            "<stringify_coords> strlength value must be one of {}".format(
-                strlength_valid
-            )
+            f"<stringify_coords> strlength value must be one of {strlength_valid}"
         )
+
     try:
         result = str(int(float(value))).rjust(strlength, "0")
         return result
-    except Exception as e:
+    except Exception as err:
         raise RuntimeError(
-            "<stringify_coords> failed for reason: {}".format(e)
-        )
+            f"<stringify_coords> failed for reason: {err}"
+        ) from err
 
 
-def decdeg2dms(dd: any) -> tuple:
+def decdeg2dms(dec_deg: any) -> tuple:
     """Convert decimal degree coordinate to a tuple containing each DMS values
 
     :param dd: Input value, can be string, float or integer
@@ -82,10 +82,9 @@ def decdeg2dms(dd: any) -> tuple:
     :return: A tuple containing respectively degree, minutes and seconds
     :rtype: tuple
     """
-    dd = float(dd)
-    negative = dd < 0
-    dd = abs(dd)
-    minutes, seconds = divmod(dd * 3600, 60)
+    negative = dec_deg < 0
+    dec_deg = abs(float(dec_deg))
+    minutes, seconds = divmod(dec_deg * 3600, 60)
     degrees, minutes = divmod(minutes, 60)
     if negative:
         if degrees > 0:
@@ -102,17 +101,15 @@ def generate_openair_coord(coord: float, axis_type: str) -> str:
 
     :param coord: Coordinate value (latitude or longitude)
     :type coord: float
-    :param axis_type: Axis definition, must be one of these values : x, lon, longitude, y, latitude, lat
+    :param axis_type: Axis definition (x, lon, longitude, y, latitude, lat)
     :type axis_type: str
     :return: A string that represents coordinate in OpenAir format  "DD:MM:SS DIRECTION"
     :rtype: str
     """
 
-    if axis_type not in AXIS_DICT.keys():
+    if axis_type not in AXIS_DICT:
         raise ValueError(
-            "<get_cardinal> strlength value must be one of {}".format(
-                AXIS_DICT.keys()
-            )
+            f"<get_cardinal> strlength value should be one of {AXIS_DICT.keys}"
         )
 
     axis = AXIS_DICT[axis_type]
@@ -121,40 +118,36 @@ def generate_openair_coord(coord: float, axis_type: str) -> str:
         label = AXIS_DIR_DICT[axis][1]
     else:
         label = AXIS_DIR_DICT[axis][0]
-    d, m, s = decdeg2dms(coord)
-    coord = "{}:{}:{} {}".format(
-        stringify_coords(d), stringify_coords(m), stringify_coords(s), label
-    )
+    deg, minut, sec = decdeg2dms(coord)
+    coord = f"{stringify_coords(deg)}:{stringify_coords(minut)}:{stringify_coords(sec)} {label}"
     return coord
 
 
 def generate_coords(coords: tuple) -> str:
     """Generate X/Y coordinates in OpenAir format "DP DD:MM:SS N DD:MM:SS E"
 
-    :param coords: Axis definition, must be one of these values : x, lon, longitude, y, latitude, lat
+    :param coords: Axis definition, (x, lon, longitude, y, latitude, lat)
     :type coords: tuple
     :return:  A string with coordinates converted in openair format
     :rtype: str
     """
-    if type(coords) is not tuple:
+    if not isinstance(coords, tuple):
         raise TypeError("<generate_coords> coords must be a tuple")
     if len(coords) != 2:
         raise ValueError(
             "<generate_coords> coords must be a tuple of 2 values"
         )
     openair_coord = ()
-    for i in range(len(COORDS_ORDER)):
+    for i, value in enumerate(COORDS_ORDER):
         if abs(coords[i]) > 180:
             raise ValueError(
-                "<generate_coords> decimal coords must be between 0 and 180°, value for {} is {}".format(
-                    COORDS_ORDER[i], coords[i]
-                )
+                "<generate_coords> decimal coords must be between 0 and 180°"
+                f"value for {COORDS_ORDER[i]} is {coords[i]}"
             )
-        else:
-            openair_coord = openair_coord + (
-                generate_openair_coord(coords[i], COORDS_ORDER[i]),
-            )
-    openair_coords = "DP {} {}".format(openair_coord[1], openair_coord[0])
+        openair_coord = openair_coord + (
+            generate_openair_coord(coords[i], COORDS_ORDER[i]),
+        )
+    openair_coords = f"DP {openair_coord[1]} {openair_coord[0]}"
     return openair_coords
 
 

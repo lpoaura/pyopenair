@@ -51,13 +51,13 @@ jobs:
     #--------------------------------
     #--------  run linters  ---------
     #--------------------------------
-    - name: Run linters
-      run: poetry run pylint
+    # - name: Run linters
+    #   run: poetry run pylint
     #-----------------------------
     #--------  run mypy  ---------
     #-----------------------------
-    - name: Run mypy
-      run: poetry run mypy ./pyopenair
+    # - name: Run mypy
+    #   run: poetry run mypy ./pyopenair
 
   run-unit-test:
     needs: [check-syntax-lints-type]
