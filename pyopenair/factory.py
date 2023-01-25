@@ -8,6 +8,7 @@ from pyopenair.helper import (
     altitude_formatter,
     fields_formatter,
     comment_formatter,
+    object_formatter,
 )
 
 
@@ -73,33 +74,17 @@ def wkt2openair(
         header.append(altitude_formatter("H", ah_alti, ah_unit, ah_mode))
     if al_alti and al_mode:
         header.append(altitude_formatter("L", al_alti, al_unit, al_mode))
-    geom = loads(wkt)
-    if geom.geom_type == "Polygon":
-        node_coords = []
-        for node in list(geom.exterior.coords):
-            node_coords.append(generate_coords(node))
-            node_coords = list(OrderedDict.fromkeys(node_coords))
-        desc = "\n".join(header).format(label=label)
-        for coord in node_coords:
-            desc += "\n{}".format(coord)
-        return desc
-    elif geom.geom_type == "MultiPolygon":
-        areas = []
-        lengeom = len(geom)
-        i = 1
-        for g in geom:
-            node_coords = []
-            for node in list(g.exterior.coords):
-                node_coords.append(generate_coords(node))
-                node_coords = list(OrderedDict.fromkeys(node_coords))
-            label_elem = "{} ({}/{})".format(label, i, lengeom)
-            i = i + 1
-            desc_tpl = "\n".join(header)
-            desc = desc_tpl.format(label=label_elem)
-            for coord in node_coords:
-                desc += "\n{}".format(coord)
+    obj = loads(wkt)
+    if obj.geom_type == "Polygon":
+        return object_formatter(obj, label, header)
+    elif obj.geom_type == "MultiPolygon":
+        areas, len_geom, i = [], len(obj.geoms), 0
+        for g in obj.geoms:
+            i += 1
+            label_item = "{} ({}/{})".format(label, i, len_geom)
+            desc = object_formatter(g, label_item, header)
             desc += "\n\n"
             areas.append(desc)
-            return "\n".join(areas)
+        return "\n".join(areas)
     else:
         return None

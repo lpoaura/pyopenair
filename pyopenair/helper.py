@@ -3,6 +3,8 @@
 
 import logging
 from math import ceil, floor
+from collections import OrderedDict
+from shapely.geometry.polygon import Polygon
 
 
 logger = logging.getLogger(__name__)
@@ -255,3 +257,26 @@ def coalesce(var: any, default: any = "default") -> any:
     :rtype: any
     """
     return default if var is None else var
+
+
+def object_formatter(g: Polygon, label: str, header: list) -> str:
+    """Return a single OpenAir object
+
+    :param g: Geometry to convert
+    :type g: Polygon
+    :param label: Object label
+    :type label: str
+    :param header: Object headers list
+    :type header: list
+    :return: Openair object
+    :rtype: str
+    """
+
+    node_coords = []
+    for node in list(g.exterior.coords):
+        node_coords.append(generate_coords(node))
+        node_coords = list(OrderedDict.fromkeys(node_coords))
+    desc = "\n".join(header).format(label=label)
+    for coord in node_coords:
+        desc += "\n{}".format(coord)
+    return desc

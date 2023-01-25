@@ -6,7 +6,10 @@ from pyopenair.helper import (
     generate_coords,
     generate_openair_coord,
     decdeg2dms,
+    object_formatter,
 )
+from shapely.wkt import loads
+from data import BasicDataToTest, DataToTest, wktpoly, wktmultipoly, headers
 
 
 def test_stringify_coords_l2():
@@ -94,3 +97,17 @@ Dolor et dicta ducimus in provident quod.
 """
     result = "**********************************************************\n* A pariatur dignissimos vel ipsum pariatur              *\n* Veritatis eum aut aut dolorem doloremque reprehenderit *\n* Dolor et dicta ducimus in provident quod.              *\n*                                                        *\n**********************************************************"
     assert comment_formatter(comment) == result
+
+
+def test_object_formatter():
+    obj = object_formatter(loads(wktpoly), "labeldetest", headers)
+    result = """AC class
+AH 3281FT AGL
+AN labeldetest
+AL 328FT AGL
+DP 44:40:28 N 03:51:34 E
+DP 44:34:43 N 03:49:25 E
+DP 44:31:04 N 03:57:59 E
+DP 44:34:57 N 04:00:57 E
+DP 44:40:42 N 03:57:59 E"""
+    assert obj == result
