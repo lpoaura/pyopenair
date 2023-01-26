@@ -3,6 +3,7 @@
 """Factory"""
 
 import logging
+from typing import Union
 
 from shapely.wkt import loads
 
@@ -20,14 +21,14 @@ def wkt2openair(
     wkt: str,
     an: str = "defaultlabel",
     ac: str = "?",
-    ah_alti: int | None = None,
+    ah_alti: Union[int, None] = None,
     ah_unit: str = "FT",
     ah_mode: str = "AMSL",
-    al_alti: int | None = None,
+    al_alti: Union[int, None] = None,
     al_unit: str = "FT",
     al_mode: str = "SFC",
-    comment: str | None = None,
-    other: dict | None = None,
+    comment: Union[str, None] = None,
+    other: Union[dict, None] = None,
 ) -> str | None:
     """Return an AirSpace in OpenAir format all main informations
     (name, class, upper and lower bounds, etc.)
