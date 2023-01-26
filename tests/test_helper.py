@@ -14,27 +14,23 @@ from pyopenair.helper import (
 
 
 def test_stringify_coords_l2():
-    """Test coordinate stringify with string length = 2 
-    """
+    """Test coordinate stringify with string length = 2"""
     assert stringify_coords(1, 2) == "01"
 
 
 def test_stringify_coords_l3():
-    """Test coordinate stringify with string length = 3 
-    """
+    """Test coordinate stringify with string length = 3"""
     assert stringify_coords(1, 3) == "001"
 
 
 def test_decdeg2dms():
-    """Test convert from decimal degrees to dms
-    """
+    """Test convert from decimal degrees to dms"""
     result = (5.0, 33.0, 18.0)
     assert decdeg2dms(5.555) == result
 
 
 def test_upper_bounds_altitude_formatter_m():
-    """Test upper altitude formatter with value
-    """
+    """Test upper altitude formatter with value"""
     result = "AH 329FT AGL"
     assert (
         altitude_formatter(cat="H", alti=100, unit="m", mode="AGL") == result
@@ -74,15 +70,13 @@ def test_altitude_formatter_ft():
 
 
 def test_fields_formatter():
-    """Test fields formatter
-    """
+    """Test fields formatter"""
     result = "*ATYPE arg1 arg2"
     assert fields_formatter("*ATYPE", "arg1", "arg2") == result
 
 
 def test_generate_openair_coord_x():
-    """Test longitude formatting
-    """
+    """Test longitude formatting"""
     result = "45:00:00 E"
     assert generate_openair_coord(45, "x") == result
 

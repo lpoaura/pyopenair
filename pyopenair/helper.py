@@ -179,9 +179,7 @@ def altitude_formatter(
         alti = int(alti)
         unit = unit.upper()
         if unit not in ("FT", "M", "FL"):
-            raise ValueError(
-                'Altitude unit type must be "FT", "M" or "FL"'
-            )
+            raise ValueError('Altitude unit type must be "FT", "M" or "FL"')
         if unit == "FL":
             stralti = "{unit}{alti}"
         else:
