@@ -6,7 +6,12 @@ import logging
 
 from shapely.wkt import loads
 
-from .helper import altitude_formatter, comment_formatter, fields_formatter, object_formatter
+from .helper import (
+    altitude_formatter,
+    comment_formatter,
+    fields_formatter,
+    object_formatter,
+)
 
 logger = logging.getLogger(__name__)
 
