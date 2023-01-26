@@ -1,6 +1,6 @@
 import logging
 
-from sample_data import BasicDataToTest, DataToTest, WKT_MULTIPOLY, WKT_POLY
+from sample_data import WKT_MULTIPOLY, WKT_POLY, BasicDataToTest, DataToTest
 
 from pyopenair.factory import wkt2openair
 
