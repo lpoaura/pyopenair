@@ -5,8 +5,9 @@
 import logging
 from collections import OrderedDict
 from math import ceil, floor
+from typing import Optional, Union
 
-from shapely.geometry.polygon import Polygon
+from shapely.geometry.polygon import Polygon  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,7 @@ def m2ft(cat: str, alti: int) -> int:
     return ceil(alti / FT_FACTOR) if cat == "H" else floor(alti / FT_FACTOR)
 
 
-def stringify_coords(value: any, strlength: int = 2) -> str:
+def stringify_coords(value: Union[str, int, float], strlength: int = 2) -> str:
     """Stringify each DMS integer values to formatted strings.
 
     eg: 6 seconds will return 006
@@ -74,7 +75,7 @@ def stringify_coords(value: any, strlength: int = 2) -> str:
         ) from err
 
 
-def decdeg2dms(dec_deg: any) -> tuple:
+def decdeg2dms(dec_deg: Union[str, int, float]) -> tuple:
     """Convert decimal degree coordinate to a tuple containing each DMS values
 
     :param dd: Input value, can be string, float or integer
@@ -82,8 +83,9 @@ def decdeg2dms(dec_deg: any) -> tuple:
     :return: A tuple containing respectively degree, minutes and seconds
     :rtype: tuple
     """
+    dec_deg = float(dec_deg)
     negative = dec_deg < 0
-    dec_deg = abs(float(dec_deg))
+    dec_deg = abs(dec_deg)
     minutes, seconds = divmod(dec_deg * 3600, 60)
     degrees, minutes = divmod(minutes, 60)
     if negative:
@@ -119,8 +121,8 @@ def generate_openair_coord(coord: float, axis_type: str) -> str:
     else:
         label = AXIS_DIR_DICT[axis][0]
     deg, minut, sec = decdeg2dms(coord)
-    coord = f"{stringify_coords(deg)}:{stringify_coords(minut)}:{stringify_coords(sec)} {label}"
-    return coord
+    result = f"{stringify_coords(deg)}:{stringify_coords(minut)}:{stringify_coords(sec)} {label}"
+    return result
 
 
 def generate_coords(coords: tuple) -> str:
@@ -152,8 +154,8 @@ def generate_coords(coords: tuple) -> str:
 
 
 def altitude_formatter(
-    cat: str, alti: int, unit: str = "m", mode: str = None
-) -> any:
+    cat: str, alti: int, unit: str = "m", mode: Optional[str] = None
+) -> str:
     """Airspace upper or lower bounds formatter
 
     :param cat: Is upper (h) or lower (l) bound
@@ -234,19 +236,19 @@ def comment_formatter(comment: str) -> str:
     return new_comment
 
 
-def coalesce(var: any, default: any = "default") -> any:
-    """Return a default value if main value is None
+# def coalesce(var: any, default: any = "default") -> any:
+#     """Return a default value if main value is None
 
-    :param var: entry variable
-    :type var: any
+#     :param var: entry variable
+#     :type var: any
 
-    :param default: default value
-    :type default: any
+#     :param default: default value
+#     :type default: any
 
-    :return:  return default if var is null
-    :rtype: any
-    """
-    return default if var is None else var
+#     :return:  return default if var is null
+#     :rtype: any
+#     """
+#     return default if var is None else var
 
 
 def object_formatter(geom: Polygon, label: str, header: list) -> str:

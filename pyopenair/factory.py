@@ -3,9 +3,9 @@
 """Factory"""
 
 import logging
-from typing import Union
+from typing import Optional
 
-from shapely.wkt import loads
+from shapely.wkt import loads  # type: ignore
 
 from .helper import (
     altitude_formatter,
@@ -21,15 +21,15 @@ def wkt2openair(
     wkt: str,
     an: str = "defaultlabel",
     ac: str = "?",
-    ah_alti: Union[int, None] = None,
+    ah_alti: Optional[int] = None,
     ah_unit: str = "FT",
     ah_mode: str = "AMSL",
-    al_alti: Union[int, None] = None,
+    al_alti: Optional[int] = None,
     al_unit: str = "FT",
     al_mode: str = "SFC",
-    comment: Union[str, None] = None,
-    other: Union[dict, None] = None,
-) -> str | None:
+    comment: Optional[str] = None,
+    other: Optional[dict] = None,
+) -> Optional[str]:
     """Return an AirSpace in OpenAir format all main informations
     (name, class, upper and lower bounds, etc.)
 
