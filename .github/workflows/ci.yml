@@ -6,10 +6,9 @@ name: Python package
 on:
   push:
     # branches: [ $default-branch ]
-    branches: [ 'testci' ]
+    branches: [ 'dev' ]
   pull_request:
-    # branches: [ $default-branch ]
-    branches: [ 'testci' ]
+    branches: [ $default-branch ]
 
 jobs:
   check-syntax-lints-type:
