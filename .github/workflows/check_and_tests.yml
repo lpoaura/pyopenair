@@ -49,13 +49,16 @@ jobs:
     #--------------------------------
     #--------  run linters  ---------
     #--------------------------------
-    # - name: Run linters
-    #   run: poetry run pylint
+    - name: Run linters
+      run: poetry run pylint pyopenair
     #-----------------------------
     #--------  run mypy  ---------
     #-----------------------------
-    # - name: Run mypy
-    #   run: poetry run mypy ./pyopenair
+    - name: Run mypy
+      run: poetry run mypy pyopenair
+    #-----------------------------
+    #--------  run build  ---------
+    #-----------------------------
     - name: Test build
       run: poetry build
 
