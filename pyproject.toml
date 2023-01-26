@@ -34,21 +34,27 @@ flake8 = "^5.0.4"
 mypy = "^0.991"
 black = "^22.12.0"
 pylint = "^2.15.10"
-pytest = "^7.2.1"
-isort = "^5.7.0"
+isort = "^5.11.4"
 pre-commit = "^2.10.1"
 
 
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.1"
+
+[tool.poetry.group.docs]
+optional = true
+
 [tool.poetry.group.docs.dependencies]
-Sphinx = "^3.5.1"
-sphinx-rtd-theme = "^0.5.1"
-Pygments = "^2.8.0"
+sphinx-rtd-theme = "^1.1.1"
+sphinx = "^4.3.2"
+pygments = "^2.14.0"
 
 
 [tool.isort]
-include_trailing_comma = true
+profile = "black"
 line_length = 79
 multi_line_output = 3
+include_trailing_comma = true
 
 
 [tool.black]
@@ -75,6 +81,19 @@ exclude = '''
                      # the root of the project
 )
 '''
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+  "too-many-arguments",
+  "too-many-locals",
+  "protected-access"
+]
+good-names = [
+    "an",
+    "ac",
+    "i"
+]
+
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
