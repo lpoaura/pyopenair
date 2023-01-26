@@ -40,12 +40,12 @@ jobs:
     #--------  run isort  ---------
     #------------------------------
     - name: Format check with isort
-      run: poetry run isort --check {pyopenair,tests,docs} --profile black
+      run: poetry run isort --check pyopenair --profile black
     #------------------------------
     #--------  run black  ---------
     #------------------------------
     - name: Format check with black
-      run: poetry run black --check {pyopenair,tests,docs}
+      run: poetry run black --check pyopenair
     #--------------------------------
     #--------  run linters  ---------
     #--------------------------------
