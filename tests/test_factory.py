@@ -1,6 +1,6 @@
 import logging
 
-from data import BasicDataToTest, DataToTest, wktmultipoly, wktpoly
+from sample_data import BasicDataToTest, DataToTest, WKT_MULTIPOLY, WKT_POLY
 
 from pyopenair.factory import wkt2openair
 
@@ -49,7 +49,7 @@ DP 44:34:43 N 03:49:25 E
 DP 44:31:04 N 03:57:59 E
 DP 44:34:57 N 04:00:57 E
 DP 44:40:42 N 03:57:59 E"""
-    assert wkt2openair(**(BasicDataToTest(wktpoly)._asdict())) == openair
+    assert wkt2openair(**(BasicDataToTest(WKT_POLY)._asdict())) == openair
 
 
 def test_wkt2openair_poly():
@@ -66,7 +66,7 @@ DP 44:34:43 N 03:49:25 E
 DP 44:31:04 N 03:57:59 E
 DP 44:34:57 N 04:00:57 E
 DP 44:40:42 N 03:57:59 E"""
-    assert wkt2openair(**(DataToTest(wktpoly)._asdict())) == openair
+    assert wkt2openair(**(DataToTest(WKT_POLY)._asdict())) == openair
 
 
 def test_wkt2openair_multipoly():
@@ -95,4 +95,4 @@ DP 44:27:07 N 04:21:27 E
 DP 44:30:33 N 04:17:42 E
 
 """
-    assert wkt2openair(**(DataToTest(wktmultipoly)._asdict())) == openair
+    assert wkt2openair(**(DataToTest(WKT_MULTIPOLY)._asdict())) == openair

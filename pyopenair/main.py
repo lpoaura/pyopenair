@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+""" Main """
+
 import argparse
 import logging
 
@@ -28,56 +32,56 @@ Convert wkt to openair
         dest="loglevel",
         const=logging.DEBUG,
     )
-    optionalParser = parser._action_groups.pop()  # Edited this line
-    # optionalParser = parser.add_argument_group("optional named arguments")
+    optional_parser = parser._action_groups.pop()  # Edited this line
+    # optional_parser = parser.add_argument_group("optional named arguments")
 
-    requiredParser = parser.add_argument_group("required arguments")
-    requiredParser.add_argument(
+    required_parser = parser.add_argument_group("required arguments")
+    required_parser.add_argument(
         "--wkt",
         metavar="wkt",
         required=True,
         help="Airspace geometry as WKT in WGS84",
     )
-    requiredParser.add_argument(
+    required_parser.add_argument(
         "--ac", metavar="class", required=True, help="Airspace class"
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--an", metavar="label", required=False, help="Airspace name"
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--al_alti", metavar="al_alti", required=False, help="AL altitude"
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--al_unit",
         metavar="al_unit",
         required=False,
         help="AL Altitude unit",
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--al_mode",
         metavar="al_mode",
         required=False,
         help="AL Altitude mode",
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--ah_alti", metavar="ah_alti", required=False, help="AH altitude"
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--ah_unit",
         metavar="ah_unit",
         required=False,
         help="AH Altitude unit",
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--ah_mode",
         metavar="ah_mode",
         required=False,
         help="AH Altitude mode",
     )
-    optionalParser.add_argument(
+    optional_parser.add_argument(
         "--comment", metavar="comment", required=False, help="Comment"
     )
-    parser._action_groups.append(optionalParser)  # added this line
+    parser._action_groups.append(optional_parser)  # added this line
     args = parser.parse_args()
 
     # logging.basicConfig(level=args.logLevel)
@@ -89,14 +93,10 @@ Convert wkt to openair
     logger = logging.getLogger(__name__)
     # logger.debug(f"logLevel {args.logLevel} d{logging.DEBUG} i{logging.INFO}")
     logger.debug(
-        "Args \n{args}".format(
-            args="\n".join(
-                [
-                    "\t{}: {}".format(k, v)
-                    for k, v in sorted(vars(args).items())
-                ]
-            )
-        )
+        "Args \n%s",
+        "\n".join(
+            [f"\t{key}: {value}" for key, value in sorted(vars(args).items())]
+        ),
     )
 
     print(

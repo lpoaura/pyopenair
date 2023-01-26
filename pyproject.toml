@@ -82,6 +82,19 @@ exclude = '''
 )
 '''
 
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+  "too-many-arguments",
+  "too-many-locals",
+  "protected-access"
+]
+good-names = [
+    "an",
+    "ac",
+    "i"
+]
+
+
 [build-system]
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core>=1.0.0"]

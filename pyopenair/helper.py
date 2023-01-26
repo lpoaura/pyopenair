@@ -137,12 +137,12 @@ def generate_coords(coords: tuple) -> str:
         raise ValueError(
             "<generate_coords> coords must be a tuple of 2 values"
         )
-    openair_coord = ()
+    openair_coord: tuple = ()
     for i, value in enumerate(COORDS_ORDER):
         if abs(coords[i]) > 180:
             raise ValueError(
                 "<generate_coords> decimal coords must be between 0 and 180°"
-                f"value for {COORDS_ORDER[i]} is {coords[i]}"
+                f"value for {value} is {coords[i]}"
             )
         openair_coord = openair_coord + (
             generate_openair_coord(coords[i], COORDS_ORDER[i]),
@@ -170,31 +170,30 @@ def altitude_formatter(
     cat = cat.upper()
     if alti is None and mode is None:
         return None
-    else:
-        cat = cat.upper()
-        strlist = []
-        if cat not in ("H", "L"):
-            raise ValueError('altitude type must be "H" or "L"')
-        strlist.append("A{}".format(cat))
-        if alti is not None:
-            alti = int(alti)
-            unit = unit.upper()
-            if unit not in ("FT", "M", "FL"):
-                raise ValueError(
-                    'Altitude unit type must be "FT", "M" or "FL"'
-                )
-            if unit == "FL":
-                stralti = "{unit}{alti}"
-            else:
-                stralti = "{alti}FT"
-                if unit == "M":
-                    alti = m2ft(cat, alti)
-            strlist.append(stralti.format(unit=unit, alti=alti))
-        if mode is not None:
-            strlist.append("{mode}".format(mode=mode))
+    cat = cat.upper()
+    strlist = []
+    if cat not in ("H", "L"):
+        raise ValueError('altitude type must be "H" or "L"')
+    strlist.append(f"A{cat}")
+    if alti is not None:
+        alti = int(alti)
+        unit = unit.upper()
+        if unit not in ("FT", "M", "FL"):
+            raise ValueError(
+                'Altitude unit type must be "FT", "M" or "FL"'
+            )
+        if unit == "FL":
+            stralti = "{unit}{alti}"
         else:
-            strlist.append("SFC")
-        return " ".join(strlist)
+            stralti = "{alti}FT"
+            if unit == "M":
+                alti = m2ft(cat, alti)
+        strlist.append(stralti.format(unit=unit, alti=alti))
+    if mode is not None:
+        strlist.append(f"{mode}")
+    else:
+        strlist.append("SFC")
+    return " ".join(strlist)
 
 
 def fields_formatter(cat: str, *args: str) -> str:
@@ -252,7 +251,7 @@ def coalesce(var: any, default: any = "default") -> any:
     return default if var is None else var
 
 
-def object_formatter(g: Polygon, label: str, header: list) -> str:
+def object_formatter(geom: Polygon, label: str, header: list) -> str:
     """Return a single OpenAir object
 
     :param g: Geometry to convert
@@ -266,10 +265,10 @@ def object_formatter(g: Polygon, label: str, header: list) -> str:
     """
 
     node_coords = []
-    for node in list(g.exterior.coords):
+    for node in list(geom.exterior.coords):
         node_coords.append(generate_coords(node))
         node_coords = list(OrderedDict.fromkeys(node_coords))
     desc = "\n".join(header).format(label=label)
     for coord in node_coords:
-        desc += "\n{}".format(coord)
+        desc += f"\n{coord}"
     return desc

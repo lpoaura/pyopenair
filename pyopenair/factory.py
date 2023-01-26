@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Factory"""
+
 import logging
 
 from shapely.wkt import loads
 
-from pyopenair.helper import (
+from .helper import (
     altitude_formatter,
     comment_formatter,
     fields_formatter,
@@ -18,18 +20,19 @@ def wkt2openair(
     wkt: str,
     an: str = "defaultlabel",
     ac: str = "?",
-    ah_alti: int = None,
+    ah_alti: int | None = None,
     ah_unit: str = "FT",
     ah_mode: str = "AMSL",
-    al_alti: int = None,
+    al_alti: int | None = None,
     al_unit: str = "FT",
     al_mode: str = "SFC",
-    comment: str = None,
-    other: dict = {},
-) -> str:
-    """Return an AirSpace in OpenAir format all main informations (name, class, upper and lower bounds, etc.)
+    comment: str | None = None,
+    other: dict | None = None,
+) -> str | None:
+    """Return an AirSpace in OpenAir format all main informations
+    (name, class, upper and lower bounds, etc.)
 
-    :param wkt: Object geometry as WGS84 (EPSG84:4326) WKT (only Polygon and Multipolygon are accepted)
+    :param wkt: Object geometry as WGS84 (EPSG84:4326) WKT (Polygon and Multipolygon only)
     :type wkt: str
     :param an: Airspace name, defaults to "defaultlabel"
     :type an: str, optional
@@ -52,23 +55,15 @@ def wkt2openair(
     :return: Airspace in OpenAir format
     :rtype: str
     """
-    logger.debug(
-        "Locals: \n{locals}".format(
-            locals="\n".join(
-                ["\t{}: {}".format(k, v) for k, v in locals().items()]
-            )
-        )
-    )
     header = []
     label = fields_formatter("AN", an)
-    logger.debug("label: {label}".format(label=label))
-
     if comment:
         header.append(comment_formatter(comment))
     header.append(fields_formatter("AC", ac))
     header.append("{label}")
-    for k, v in other.items():
-        header.append(fields_formatter(k, v))
+    if other:
+        for key, value in other.items():
+            header.append(fields_formatter(key, value))
     if ah_alti and ah_mode:
         header.append(altitude_formatter("H", ah_alti, ah_unit, ah_mode))
     if al_alti and al_mode:
@@ -76,14 +71,14 @@ def wkt2openair(
     obj = loads(wkt)
     if obj.geom_type == "Polygon":
         return object_formatter(obj, label, header)
-    elif obj.geom_type == "MultiPolygon":
+    if obj.geom_type == "MultiPolygon":
         areas, len_geom, i = [], len(obj.geoms), 0
-        for g in obj.geoms:
+        for geom in obj.geoms:
             i += 1
-            label_item = "{} ({}/{})".format(label, i, len_geom)
-            desc = object_formatter(g, label_item, header)
+            label_item = f"{label} ({i}/{len_geom})"
+            desc = object_formatter(geom, label_item, header)
             desc += "\n\n"
             areas.append(desc)
         return "\n".join(areas)
-    else:
-        return None
+
+    return None
