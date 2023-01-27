@@ -4,11 +4,27 @@ on:
     tags:
       - "v*.*.*"
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-and-publish:
     steps:
-      - uses: actions/checkout@v2
-      - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v1.16
+      #-----------------------------------------------
+      #  -----  checkout repo and set-up python  -----
+      #-----------------------------------------------
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+      #------------------------------------
+      #  -----  Install dependencies  -----
+      #------------------------------------
+      - name: Install dependencies
+        run: |
+          poetry install
+      - name: Run tests
+        run: |
+          printenv
+          poetry publish --build --username __token__ --password $PYPI_TOKEN
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}
