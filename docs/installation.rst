@@ -4,7 +4,7 @@ Installation
 
    .. code:: console
 
-        $ pip install -i https://test.pypi.org/simple/ pyopenair
+      pip install pyopenair
 
 or
 

@@ -154,8 +154,11 @@ def generate_coords(coords: tuple) -> str:
 
 
 def altitude_formatter(
-    cat: str, alti: int, unit: str = "m", mode: Optional[str] = None
-) -> str:
+    cat: str,
+    alti: Optional[float] = None,
+    unit: str = "m",
+    mode: Optional[str] = None,
+) -> Optional[str]:
     """Airspace upper or lower bounds formatter
 
     :param cat: Is upper (h) or lower (l) bound

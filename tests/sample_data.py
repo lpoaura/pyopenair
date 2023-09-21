@@ -12,6 +12,9 @@ class BasicDataToTest(NamedTuple):
     wkt: str
     an: str = "label"
     ac: str = "class"
+    ah_alti: int = 1000
+    ah_unit: str = "m"
+    ah_mode: str = "AGL"
 
 
 class DataToTest(NamedTuple):

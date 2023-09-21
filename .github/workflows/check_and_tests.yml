@@ -6,61 +6,60 @@ name: Check and tests
 on:
   push:
     # branches: [ $default-branch ]
-    branches: [ 'dev' ]
+    branches: ["dev"]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [$default-branch]
 
 jobs:
   check-syntax-lints-type:
-
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
-    #-----------------------------------------------
-    #  -----  checkout repo and set-up python  -----
-    #-----------------------------------------------    
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Run image
-      uses: abatilo/actions-poetry@v2
-    #------------------------------------
-    #  -----  Install dependencies  -----
-    #------------------------------------
-    - name: Install dependencies
-      run: |
-        poetry install
-    #------------------------------
-    #--------  run isort  ---------
-    #------------------------------
-    - name: Format check with isort
-      run: poetry run isort --check pyopenair --profile black
-    #------------------------------
-    #--------  run black  ---------
-    #------------------------------
-    - name: Format check with black
-      run: poetry run black --check pyopenair
-    #--------------------------------
-    #--------  run linters  ---------
-    #--------------------------------
-    - name: Run linters
-      run: poetry run pylint pyopenair
-    #-----------------------------
-    #--------  run mypy  ---------
-    #-----------------------------
-    - name: Run mypy
-      run: poetry run mypy pyopenair
-    #-----------------------------
-    #--------  run build  ---------
-    #-----------------------------
-    - name: Test build
-      run: poetry build
+      #-----------------------------------------------
+      #  -----  checkout repo and set-up python  -----
+      #-----------------------------------------------
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+      #------------------------------------
+      #  -----  Install dependencies  -----
+      #------------------------------------
+      - name: Install dependencies
+        run: |
+          poetry install
+      #------------------------------
+      #--------  run isort  ---------
+      #------------------------------
+      - name: Format check with isort
+        run: poetry run isort --check pyopenair --profile black
+      #------------------------------
+      #--------  run black  ---------
+      #------------------------------
+      - name: Format check with black
+        run: poetry run black --check pyopenair
+      #--------------------------------
+      #--------  run linters  ---------
+      #--------------------------------
+      - name: Run linters
+        run: poetry run pylint pyopenair
+      #-----------------------------
+      #--------  run mypy  ---------
+      #-----------------------------
+      - name: Run mypy
+        run: poetry run mypy pyopenair
+      #-----------------------------
+      #--------  run build  ---------
+      #-----------------------------
+      - name: Test build
+        run: poetry build
 
   run-unit-test:
     needs: [check-syntax-lints-type]
@@ -71,24 +70,21 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10"]
 
     steps:
-    #-----------------------------------------------
-    #  -----  checkout repo and set-up python  -----
-    #-----------------------------------------------    
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Run image
-      uses: abatilo/actions-poetry@v2
-    #------------------------------------
-    #  -----  Install dependencies  -----
-    #------------------------------------
-    - name: Install dependencies
-      run: |
-        poetry install
-    - name: Run tests
-      run: poetry run pytest
-
-
-
+      #-----------------------------------------------
+      #  -----  checkout repo and set-up python  -----
+      #-----------------------------------------------
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+      #------------------------------------
+      #  -----  Install dependencies  -----
+      #------------------------------------
+      - name: Install dependencies
+        run: |
+          poetry install
+      - name: Run tests
+        run: poetry run pytest

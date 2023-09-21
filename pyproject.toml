@@ -25,7 +25,7 @@ classifiers = [
 pyopenair = "pyopenair.main:cli"
 
 [tool.poetry.dependencies]
-python = ">=3.7.2,<4.0.0"
+python = ">=3.8,<4.0.0"
 Shapely = "^2.0.0"
 
 
@@ -35,11 +35,12 @@ mypy = "^0.991"
 black = "^22.12.0"
 pylint = "^2.15.10"
 isort = "^5.11.4"
-pre-commit = "^2.10.1"
+pre-commit = "^3.4.0"
 
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
 
 [tool.poetry.group.docs]
 optional = true
