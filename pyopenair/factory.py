@@ -66,9 +66,14 @@ def wkt2openair(
         for key, value in other.items():
             header.append(fields_formatter(key, value))
     if ah_alti and ah_mode:
-        header.append(altitude_formatter("H", ah_alti, ah_unit, ah_mode))
-    if al_alti and al_mode:
-        header.append(altitude_formatter("L", al_alti, al_unit, al_mode))
+        ah_value = altitude_formatter("H", ah_alti, ah_unit, ah_mode)
+        if ah_value:
+            header.append(ah_value)
+    al_value = None
+    if al_alti or al_mode:
+        al_value = altitude_formatter("L", al_alti, al_unit, al_mode)
+        if al_value:
+            header.append(al_value)
     obj = loads(wkt)
     if obj.geom_type == "Polygon":
         return object_formatter(obj, label, header)

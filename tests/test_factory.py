@@ -44,6 +44,8 @@ def test_wkt2openair_poly_only_required():
 
     openair = """AC class
 AN label
+AH 3281FT AGL
+AL SFC
 DP 44:40:28 N 03:51:34 E
 DP 44:34:43 N 03:49:25 E
 DP 44:31:04 N 03:57:59 E
