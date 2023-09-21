@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyopenair"
-version = "1.2.0"
+version = "1.2.1"
 authors = ["lpofredc <frederic.cloitre@lpo.fr>"]
 description = "A simple python package to convert geo data to OpenAir format"
 license = "AGPL-3.0-or-later"
